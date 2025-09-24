@@ -11,6 +11,11 @@
 <body>
   <!-- メインコンテナ -->
   <div class="downloader">
+    <!-- タイトルと説明 -->
+    <header class="downloader__header">
+      <h1 class="downloader__title">YouTube ダウンローダー</h1>
+      <p class="downloader__description">YouTube動画を簡単にダウンロード。安全で透明な処理を提供します。</p>
+    </header>
     <!-- 言語切り替え -->
     <div class="downloader__language">
       <select id="language" aria-label="言語を選択">
@@ -20,7 +25,7 @@
       </select>
     </div>
     <!-- デバッグモードトグル -->
-    <button id="debug-toggle" class="downloader__debug-toggle" aria-label="デバッグモードを切り替え">デバッグ</button>
+    <button id="debug-toggle" class="downloader__debug-toggle" aria-label="デバッグモードを切り替え" data-state="off">デバッグ：オフ</button>
     <!-- URL入力フォーム -->
     <form id="url-form" class="downloader__form">
       <input type="text" id="url-input" class="downloader__input" placeholder="YouTubeのURLを入力" aria-label="YouTube URL">
@@ -46,10 +51,8 @@
         <option value="webm">WebM</option>
       </select>
     </div>
-    <!-- ダウンロードボタン -->
+    <!-- ダウンロード/キャンセルボタン（兼用） -->
     <button id="download-btn" class="downloader__button downloader__button--primary">ダウンロード</button>
-    <!-- ストップボタン（処理中） -->
-    <button id="stop-btn" class="downloader__button" style="display: none;">ストップ</button>
     <!-- 進捗表示エリア -->
     <div id="progress-area" class="downloader__progress" style="display: none;">
       <div class="downloader__progress-bar"></div>
@@ -80,4 +83,4 @@
   <script src="./download.js"></script>
   <script src="./main.js"></script>
 </body>
-</html>
+                                                   </html>
