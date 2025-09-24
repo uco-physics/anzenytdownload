@@ -1,0 +1,302 @@
+/* モダンで「トゥルンとした」デザインのためのCSS変数 */
+:root {
+  /* 色 */
+  --primary-color: #4A90E2; /* メインブルー */
+  --secondary-color: #FF6F61; /* アクセントコーラル */
+  --background-color: #F5F7FA; /* 明るい背景 */
+  --card-background: #FFFFFF; /* カード背景 */
+  --error-color: #FF4D4F; /* エラー赤 */
+  --text-color: #333333; /* テキスト */
+  --debug-background: #E8ECEF; /* デバッグ背景 */
+  /* フォント */
+  --font-family: 'Poppins', sans-serif;
+  --font-size-base: 16px;
+  --font-size-input: 1rem;
+  --font-size-button: 1.1rem;
+  /* 間隔 */
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  /* 角丸 */
+  --border-radius: 12px;
+  /* 影 */
+  --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  /* グラデーション */
+  --gradient-primary: linear-gradient(135deg, #4A90E2, #50C878);
+}
+
+/* リセット */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  background-color: var(--background-color);
+  color: var(--text-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: var(--spacing-md);
+}
+
+/* メインコンテナ */
+.downloader {
+  max-width: 800px;
+  width: 100%;
+  padding: var(--spacing-lg);
+  background: var(--card-background);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+}
+
+/* 言語切り替え */
+.downloader__language {
+  position: fixed;
+  top: var(--spacing-md);
+  right: var(--spacing-md);
+}
+
+.downloader__language select {
+  padding: var(--spacing-sm);
+  border-radius: var(--border-radius);
+  border: 1px solid var(--primary-color);
+  background: var(--card-background);
+  transition: all 0.2s ease-in-out;
+}
+
+.downloader__language select:focus {
+  outline: none;
+  box-shadow: 0 0 8px var(--primary-color);
+}
+
+/* デバッグトグル */
+.downloader__debug-toggle {
+  position: fixed;
+  top: var(--spacing-md);
+  right: calc(var(--spacing-md) + 120px);
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: var(--gradient-primary);
+  color: #fff;
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.downloader__debug-toggle:hover {
+  transform: scale(1.05);
+  box-shadow: var(--box-shadow);
+}
+
+/* フォーム */
+.downloader__form {
+  display: flex;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+}
+
+.downloader__input {
+  flex: 1;
+  padding: var(--spacing-md);
+  font-size: var(--font-size-input);
+  border: 1px solid var(--primary-color);
+  border-radius: var(--border-radius);
+  transition: all 0.2s ease-in-out;
+}
+
+.downloader__input:focus {
+  outline: none;
+  box-shadow: 0 0 8px var(--primary-color);
+}
+
+.downloader__input--error {
+  border-color: var(--error-color);
+  box-shadow: 0 0 8px var(--error-color);
+}
+
+/* 詳細設定トグル */
+.downloader__settings-toggle {
+  padding: var(--spacing-sm);
+  background: var(--primary-color);
+  color: #fff;
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: transform 0.3s ease-in-out;
+}
+
+.downloader__settings-toggle:hover {
+  transform: rotate(180deg);
+}
+
+/* 詳細設定パネル */
+.downloader__settings-panel {
+  padding: var(--spacing-md);
+  background: var(--card-background);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  margin-bottom: var(--spacing-md);
+  animation: slideIn 0.3s ease-in-out;
+}
+
+@keyframes slideIn {
+  from { transform: translateY(-10px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* セレクター */
+.downloader__selectors {
+  display: flex;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+}
+
+.downloader__select {
+  padding: var(--spacing-sm);
+  border-radius: var(--border-radius);
+  border: 1px solid var(--primary-color);
+  background: var(--card-background);
+  transition: all 0.2s ease-in-out;
+}
+
+.downloader__select:focus {
+  outline: none;
+  box-shadow: 0 0 8px var(--primary-color);
+}
+
+/* ボタン */
+.downloader__button {
+  padding: var(--spacing-md);
+  font-size: var(--font-size-button);
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.downloader__button--primary {
+  background: var(--gradient-primary);
+  color: #fff;
+}
+
+.downloader__button:hover {
+  transform: scale(1.05);
+  box-shadow: var(--box-shadow);
+}
+
+.downloader__button:active {
+  transform: translateY(2px);
+}
+
+/* 進捗エリア */
+.downloader__progress {
+  padding: var(--spacing-md);
+  background: var(--card-background);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  margin-bottom: var(--spacing-md);
+}
+
+.downloader__progress-bar {
+  width: 50px;
+  height: 50px;
+  border: 5px solid var(--primary-color);
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.downloader__progress-code,
+.downloader__progress-text {
+  margin-top: var(--spacing-md);
+}
+
+/* 結果エリア */
+.downloader__result {
+  padding: var(--spacing-md);
+  background: var(--card-background);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+}
+
+.downloader__video {
+  max-width: 100%;
+  border-radius: var(--border-radius);
+  margin-bottom: var(--spacing-md);
+}
+
+.downloader__metadata {
+  max-height: 300px;
+  overflow-y: auto;
+  background: var(--debug-background);
+  padding: var(--spacing-md);
+  border-radius: var(--border-radius);
+}
+
+/* デバッグパネル */
+.downloader__debug {
+  position: fixed;
+  bottom: var(--spacing-md);
+  right: var(--spacing-md);
+  max-width: 400px;
+  background: var(--debug-background);
+  padding: var(--spacing-md);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+}
+
+.downloader__debug-log {
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+/* モーダル */
+.downloader__modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.downloader__modal-content {
+  background: var(--card-background);
+  padding: var(--spacing-lg);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  text-align: center;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* レスポンシブ */
+@media (max-width: 600px) {
+  .downloader {
+    padding: var(--spacing-md);
+  }
+  .downloader__form {
+    flex-direction: column;
+  }
+  .downloader__selectors {
+    flex-direction: column;
+  }
+    }
