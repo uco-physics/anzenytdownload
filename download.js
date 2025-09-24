@@ -7,9 +7,22 @@ let abortController = null;
 
 // デバッグログを記録
 // @param {string} message - ログメッセージ
-function logDebug(message) {
+// @param {Object} [error] - エラーオブジェクト（オプション）
+function logDebug(message, error = null) {
   const debugLog = document.querySelector('#debug-log');
-  debugLog.textContent += `[${new Date().toLocaleTimeString()}] ${message}\n`;
+  let logMessage = `[${new Date().toLocaleTimeString()}] ${message}`;
+  if (error) {
+    // 詳細なエラー情報をJSON形式で整形
+    const errorDetails = {
+      message: error.message,
+      stack: error.stack || 'なし',
+      name: error.name || '不明',
+      // ytdl-core特有のエラーコードがあれば取得
+      code: error.code || 'なし',
+    };
+    logMessage += `\n詳細: ${JSON.stringify(errorDetails, null, 2)}`;
+  }
+  debugLog.textContent += `${logMessage}\n`;
   debugLog.scrollTop = debugLog.scrollHeight;
 }
 
@@ -28,11 +41,11 @@ function updateProgress(text, code = '') {
 async function getVideoMetadata(url) {
   try {
     updateProgress('URLを解析中...', 'ytdl.getInfo(url)');
-    const info = await ytdl.getInfo(url);
+    const info = await ytdl.getInfo(url, { signal: abortController.signal });
     logDebug('メタデータ取得成功');
     return info;
   } catch (error) {
-    logDebug(`メタデータ取得エラー: ${error.message}`);
+    logDebug('メタデータ取得エラー', error);
     throw error;
   }
 }
@@ -50,7 +63,7 @@ async function generateDownloadLink(info, resolution, format) {
     if (!selectedFormat) throw new Error('選択された形式が見つかりません');
     return selectedFormat.url;
   } catch (error) {
-    logDebug(`ダウンロードURL生成エラー: ${error.message}`);
+    logDebug('ダウンロードURL生成エラー', error);
     throw error;
   }
 }
