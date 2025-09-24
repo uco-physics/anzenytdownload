@@ -9,13 +9,13 @@
   <script src="https://cdn.jsdelivr.net/npm/@warren-bank/browser-ytdl-core@latest/dist/ytdl-core.js"></script>
 </head>
 <body>
-  <!-- メインコンテナ -->
+  <!-- タイトルと説明（背景に直接配置） -->
+  <header class="header">
+    <h1 class="header__title">YouTube ダウンローダー</h1>
+    <p class="header__description">YouTube動画を簡単にダウンロード。安全で透明な処理を提供します。</p>
+  </header>
+  <!-- メインコンテナ（フォーム以下） -->
   <div class="downloader">
-    <!-- タイトルと説明 -->
-    <header class="downloader__header">
-      <h1 class="downloader__title">YouTube ダウンローダー</h1>
-      <p class="downloader__description">YouTube動画を簡単にダウンロード。安全で透明な処理を提供します。</p>
-    </header>
     <!-- 言語切り替え -->
     <div class="downloader__language">
       <select id="language" aria-label="言語を選択">
@@ -51,8 +51,11 @@
         <option value="webm">WebM</option>
       </select>
     </div>
-    <!-- ダウンロード/キャンセルボタン（兼用） -->
-    <button id="download-btn" class="downloader__button downloader__button--primary">ダウンロード</button>
+    <!-- ダウンロードボタンとキャンセルボタン -->
+    <div class="downloader__buttons">
+      <button id="download-btn" class="downloader__button downloader__button--primary">ダウンロード</button>
+      <button id="cancel-btn" class="downloader__button downloader__button--cancel" style="display: none;">キャンセル</button>
+    </div>
     <!-- 進捗表示エリア -->
     <div id="progress-area" class="downloader__progress" style="display: none;">
       <div class="downloader__progress-bar"></div>
@@ -83,4 +86,4 @@
   <script src="./download.js"></script>
   <script src="./main.js"></script>
 </body>
-                                                   </html>
+</html>
