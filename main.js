@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // 要素の取得
   const urlInput = document.querySelector('#url-input');
   const downloadBtn = document.querySelector('#download-btn');
+  const cancelBtn = document.querySelector('#cancel-btn');
   const settingsToggle = document.querySelector('#settings-toggle');
   const settingsPanel = document.querySelector('#settings-panel');
   const cdnInput = document.querySelector('#cdn-input');
@@ -50,39 +51,41 @@ document.addEventListener('DOMContentLoaded', () => {
     const script = document.createElement('script');
     script.src = newCdn;
     script.onload = () => logDebug('カスタムCDNをロードしました');
-    script.onerror = () => logDebug('カスタムCDNのロードに失敗しました');
+    script.onerror = (error) => logDebug('カスタムCDNのロードに失敗しました', error);
     document.head.appendChild(script);
   };
 
-  // ダウンロード/キャンセルボタン
+  // ダウンロードボタン
   downloadBtn.onclick = async () => {
-    if (state.isProcessing) {
-      // キャンセル処理
-      stopDownload();
-      state.isProcessing = false;
-      localStorage.setItem('downloadState', JSON.stringify(state));
-      downloadBtn.textContent = translations[localStorage.getItem('language') || 'ja'].download;
-      return;
-    }
-
-    // ダウンロード処理
     state.url = urlInput.value;
     state.resolution = document.querySelector('#resolution').value;
     state.format = document.querySelector('#format').value;
     state.customTitle = document.querySelector('#title-input').value;
     state.isProcessing = true;
     localStorage.setItem('downloadState', JSON.stringify(state));
-    downloadBtn.textContent = translations[localStorage.getItem('language') || 'ja'].stop;
+    downloadBtn.style.display = 'none';
+    cancelBtn.style.display = 'block';
     try {
       await downloadVideo(state.url, state.resolution, state.format, state.customTitle);
       state.isProcessing = false;
       localStorage.setItem('downloadState', JSON.stringify(state));
-      downloadBtn.textContent = translations[localStorage.getItem('language') || 'ja'].download;
+      downloadBtn.style.display = 'block';
+      cancelBtn.style.display = 'none';
     } catch (error) {
       state.isProcessing = false;
       localStorage.setItem('downloadState', JSON.stringify(state));
-      downloadBtn.textContent = translations[localStorage.getItem('language') || 'ja'].download;
+      downloadBtn.style.display = 'block';
+      cancelBtn.style.display = 'none';
     }
+  };
+
+  // キャンセルボタン
+  cancelBtn.onclick = () => {
+    stopDownload();
+    state.isProcessing = false;
+    localStorage.setItem('downloadState', JSON.stringify(state));
+    downloadBtn.style.display = 'block';
+    cancelBtn.style.display = 'none';
   };
 
   // 詳細設定トグル
@@ -95,8 +98,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const lang = languageSelect.value;
     localStorage.setItem('language', lang);
     setLanguage(lang);
-    // ボタンテキストを更新
-    downloadBtn.textContent = state.isProcessing ? translations[lang].stop : translations[lang].download;
   };
 
   // デバッグトグル
@@ -119,7 +120,8 @@ document.addEventListener('DOMContentLoaded', () => {
     modal.style.display = 'none';
     document.querySelector('#progress-area').style.display = 'none';
     document.querySelector('#result-area').style.display = 'none';
-    downloadBtn.textContent = translations[localStorage.getItem('language') || 'ja'].download;
+    downloadBtn.style.display = 'block';
+    cancelBtn.style.display = 'none';
   };
 
   // タブ更新/閉じる時の警告
