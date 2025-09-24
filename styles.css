@@ -6,15 +6,15 @@
   --background-color: #F5F7FA; /* 明るい背景 */
   --card-background: #FFFFFF; /* カード背景 */
   --error-color: #FF4D4F; /* エラー赤 */
-  --text-color: #333333; /* テキスト */
   --debug-background: #E8ECEF; /* デバッグ背景 */
   --debug-on: #50C878; /* デバッグオン時の色 */
+  --cancel-color: #6B7280; /* キャンセルボタンのグレー */
   /* フォント */
   --font-family: 'Poppins', sans-serif;
   --font-size-base: 16px;
   --font-size-input: 1rem;
   --font-size-button: 1.1rem;
-  --font-size-title: 2rem;
+  --font-size-title: 2.5rem; /* タイトルを大きく */
   --font-size-description: 1rem;
   /* 間隔 */
   --spacing-sm: 8px;
@@ -39,31 +39,33 @@
 body {
   font-family: var(--font-family);
   font-size: var(--font-size-base);
-  background: var(--gradient-background); /* 背景にグラデーション */
+  background: var(--gradient-background);
   color: var(--text-color);
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
   min-height: 100vh;
   padding: var(--spacing-md);
 }
 
-/* ヘッダー */
-.downloader__header {
+/* ヘッダー（背景に直接配置） */
+.header {
   text-align: center;
-  margin-bottom: var(--spacing-lg);
+  margin: var(--spacing-lg) 0;
 }
 
-.downloader__title {
+.header__title {
   font-size: var(--font-size-title);
-  font-weight: 600;
+  font-weight: 700; /* 太く力強く */
   color: var(--primary-color);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 軽い影で立体感 */
 }
 
-.downloader__description {
+.header__description {
   font-size: var(--font-size-description);
   color: var(--text-color);
   opacity: 0.8;
+  margin-top: var(--spacing-sm);
 }
 
 /* メインコンテナ */
@@ -197,6 +199,12 @@ body {
 }
 
 /* ボタン */
+.downloader__buttons {
+  display: flex;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+}
+
 .downloader__button {
   padding: var(--spacing-md);
   font-size: var(--font-size-button);
@@ -208,6 +216,11 @@ body {
 
 .downloader__button--primary {
   background: var(--gradient-primary);
+  color: #fff;
+}
+
+.downloader__button--cancel {
+  background: var(--cancel-color);
   color: #fff;
 }
 
@@ -285,6 +298,8 @@ body {
 .downloader__debug-log {
   max-height: 200px;
   overflow-y: auto;
+  white-space: pre-wrap;
+  font-size: 0.9rem;
 }
 
 /* モーダル */
@@ -326,10 +341,13 @@ body {
   .downloader__selectors {
     flex-direction: column;
   }
-  .downloader__title {
-    font-size: 1.5rem;
+  .downloader__buttons {
+    flex-direction: column;
   }
-  .downloader__description {
+  .header__title {
+    font-size: 1.8rem;
+  }
+  .header__description {
     font-size: 0.9rem;
   }
-  }
+}
