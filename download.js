@@ -10,20 +10,34 @@ let abortController = null;
 // @param {Object} [error] - エラーオブジェクト（オプション）
 function logDebug(message, error = null) {
   const debugLog = document.querySelector('#debug-log');
-  let logMessage = `[${new Date().toLocaleTimeString()}] ${message}`;
+  let logMessage = `[${new Date().toLocaleTimeString('ja-JP', { timeZone: 'Asia/Tokyo' })}] ${message}`;
   if (error) {
     // 詳細なエラー情報をJSON形式で整形
     const errorDetails = {
       message: error.message,
       stack: error.stack || 'なし',
       name: error.name || '不明',
-      // ytdl-core特有のエラーコードがあれば取得
       code: error.code || 'なし',
+      timestamp: new Date().toISOString(),
     };
     logMessage += `\n詳細: ${JSON.stringify(errorDetails, null, 2)}`;
   }
   debugLog.textContent += `${logMessage}\n`;
   debugLog.scrollTop = debugLog.scrollHeight;
+}
+
+// CDNロードエラーをハンドリング
+// 拡張ポイント: フォールバックCDNやローカルファイルを試す場合、ここにロジック追加
+function handleCdnError() {
+  const error = new Error('ytdl-coreのCDNロードに失敗しました');
+  logDebug('CDNロードエラー', error);
+  // フォールバックCDNを試す
+  const fallbackCdn = 'https://unpkg.com/@warren-bank/browser-ytdl-core@latest/dist/ytdl-core.js';
+  const script = document.createElement('script');
+  script.src = fallbackCdn;
+  script.onload = () => logDebug('フォールバックCDNをロードしました: ' + fallbackCdn);
+  script.onerror = () => logDebug('フォールバックCDNも失敗しました: ' + fallbackCdn);
+  document.head.appendChild(script);
 }
 
 // 進捗を更新
@@ -40,6 +54,7 @@ function updateProgress(text, code = '') {
 // @returns {Promise<Object>} メタデータ
 async function getVideoMetadata(url) {
   try {
+    if (typeof ytdl === 'undefined') throw new Error('ytdl-coreがロードされていません');
     updateProgress('URLを解析中...', 'ytdl.getInfo(url)');
     const info = await ytdl.getInfo(url, { signal: abortController.signal });
     logDebug('メタデータ取得成功');
