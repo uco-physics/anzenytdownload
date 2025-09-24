@@ -113,6 +113,7 @@ function stopDownload() {
     updateProgress('', '');
     document.querySelector('#progress-area').style.display = 'none';
     document.querySelector('#result-area').style.display = 'none';
+    document.querySelector('#url-input').classList.remove('downloader__input--error');
     logDebug('処理をキャンセルしました');
   }
 }
