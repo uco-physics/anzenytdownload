@@ -50,9 +50,10 @@ document.addEventListener('DOMContentLoaded', () => {
     localStorage.setItem('cdnUrl', newCdn);
     const script = document.createElement('script');
     script.src = newCdn;
-    script.onload = () => logDebug('カスタムCDNをロードしました');
-    script.onerror = (error) => logDebug('カスタムCDNのロードに失敗しました', error);
-    document.head.appendChild(script);
+    script.id = 'ytdl-script';
+    script.onload = () => logDebug('カスタムCDNをロードしました: ' + newCdn);
+    script.onerror = () => handleCdnError();
+    document.head.replaceChild(script, document.getElementById('ytdl-script'));
   };
 
   // ダウンロードボタン
@@ -133,3 +134,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 拡張ポイント: Googleアカウントログインはauth.jsに分離可能
 });
+
+// CDNロードエラーをハンドリング（グローバルスコープ）
+function handleCdnError() {
+  logDebug('CDNロードエラー', new Error('ytdl-coreのCDNロードに失敗しました'));
+}
