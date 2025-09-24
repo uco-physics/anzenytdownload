@@ -4,7 +4,7 @@ const translations = {
   en: {
     placeholder: 'Enter YouTube URL',
     download: 'Download',
-    stop: 'Stop',
+    cancel: 'Cancel', // 追加
     settings: 'Settings',
     apply: 'Apply',
     customTitle: 'Custom Title (Optional)',
@@ -17,7 +17,7 @@ const translations = {
   ja: {
     placeholder: 'YouTubeのURLを入力',
     download: 'ダウンロード',
-    stop: 'ストップ',
+    cancel: 'キャンセル', // 追加
     settings: '詳細設定',
     apply: '適用',
     customTitle: 'カスタムタイトル（任意）',
@@ -30,7 +30,7 @@ const translations = {
   zh: {
     placeholder: '输入YouTube链接',
     download: '下载',
-    stop: '停止',
+    cancel: '取消', // 追加
     settings: '详细设置',
     apply: '应用',
     customTitle: '自定义标题（可选）',
@@ -47,7 +47,7 @@ const translations = {
 function setLanguage(lang) {
   document.querySelector('#url-input').placeholder = translations[lang].placeholder;
   document.querySelector('#download-btn').textContent = translations[lang].download;
-  document.querySelector('#stop-btn').textContent = translations[lang].stop;
+  document.querySelector('#cancel-btn').textContent = translations[lang].cancel;
   document.querySelector('#settings-toggle').setAttribute('aria-label', translations[lang].settings);
   document.querySelector('#apply-cdn').textContent = translations[lang].apply;
   document.querySelector('#title-input').placeholder = translations[lang].customTitle;
