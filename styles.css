@@ -10,11 +10,11 @@
   --debug-on: #50C878; /* デバッグオン時の色 */
   --cancel-color: #6B7280; /* キャンセルボタンのグレー */
   /* フォント */
-  --font-family: 'Poppins', sans-serif;
+  --font-family: 'Inter', sans-serif; /* モダンなInterフォント */
   --font-size-base: 16px;
   --font-size-input: 1rem;
   --font-size-button: 1.1rem;
-  --font-size-title: 2.5rem; /* タイトルを大きく */
+  --font-size-title: 2.8rem; /* タイトルをさらに大きく */
   --font-size-description: 1rem;
   /* 間隔 */
   --spacing-sm: 8px;
@@ -26,7 +26,8 @@
   --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   /* グラデーション */
   --gradient-primary: linear-gradient(135deg, #4A90E2, #50C878);
-  --gradient-background: linear-gradient(135deg, #E6F0FA, #F5F7FA); /* 背景グラデーション */
+  --gradient-background: linear-gradient(135deg, #E6F0FA, #F5F7FA);
+  --gradient-title: linear-gradient(135deg, #4A90E2, #FF6F61); /* タイトル用 */
 }
 
 /* リセット */
@@ -56,9 +57,12 @@ body {
 
 .header__title {
   font-size: var(--font-size-title);
-  font-weight: 700; /* 太く力強く */
-  color: var(--primary-color);
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 軽い影で立体感 */
+  font-weight: 700;
+  background: var(--gradient-title);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent; /* グラデーション文字 */
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  animation: fadeInTitle 1s ease-in-out;
 }
 
 .header__description {
@@ -66,6 +70,11 @@ body {
   color: var(--text-color);
   opacity: 0.8;
   margin-top: var(--spacing-sm);
+}
+
+@keyframes fadeInTitle {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* メインコンテナ */
@@ -345,9 +354,9 @@ body {
     flex-direction: column;
   }
   .header__title {
-    font-size: 1.8rem;
+    font-size: 2rem;
   }
   .header__description {
     font-size: 0.9rem;
   }
-}
+  }
