@@ -6,7 +6,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // 要素の取得
   const urlInput = document.querySelector('#url-input');
   const downloadBtn = document.querySelector('#download-btn');
-  const stopBtn = document.querySelector('#stop-btn');
   const settingsToggle = document.querySelector('#settings-toggle');
   const settingsPanel = document.querySelector('#settings-panel');
   const cdnInput = document.querySelector('#cdn-input');
@@ -55,37 +54,35 @@ document.addEventListener('DOMContentLoaded', () => {
     document.head.appendChild(script);
   };
 
-  // ダウンロードボタン
+  // ダウンロード/キャンセルボタン
   downloadBtn.onclick = async () => {
+    if (state.isProcessing) {
+      // キャンセル処理
+      stopDownload();
+      state.isProcessing = false;
+      localStorage.setItem('downloadState', JSON.stringify(state));
+      downloadBtn.textContent = translations[localStorage.getItem('language') || 'ja'].download;
+      return;
+    }
+
+    // ダウンロード処理
     state.url = urlInput.value;
     state.resolution = document.querySelector('#resolution').value;
     state.format = document.querySelector('#format').value;
     state.customTitle = document.querySelector('#title-input').value;
     state.isProcessing = true;
     localStorage.setItem('downloadState', JSON.stringify(state));
-    downloadBtn.style.display = 'none';
-    stopBtn.style.display = 'block';
+    downloadBtn.textContent = translations[localStorage.getItem('language') || 'ja'].stop;
     try {
       await downloadVideo(state.url, state.resolution, state.format, state.customTitle);
       state.isProcessing = false;
       localStorage.setItem('downloadState', JSON.stringify(state));
-      downloadBtn.style.display = 'block';
-      stopBtn.style.display = 'none';
+      downloadBtn.textContent = translations[localStorage.getItem('language') || 'ja'].download;
     } catch (error) {
       state.isProcessing = false;
       localStorage.setItem('downloadState', JSON.stringify(state));
-      downloadBtn.style.display = 'block';
-      stopBtn.style.display = 'none';
+      downloadBtn.textContent = translations[localStorage.getItem('language') || 'ja'].download;
     }
-  };
-
-  // ストップボタン
-  stopBtn.onclick = () => {
-    stopDownload();
-    state.isProcessing = false;
-    localStorage.setItem('downloadState', JSON.stringify(state));
-    downloadBtn.style.display = 'block';
-    stopBtn.style.display = 'none';
   };
 
   // 詳細設定トグル
@@ -98,11 +95,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const lang = languageSelect.value;
     localStorage.setItem('language', lang);
     setLanguage(lang);
+    // ボタンテキストを更新
+    downloadBtn.textContent = state.isProcessing ? translations[lang].stop : translations[lang].download;
   };
 
   // デバッグトグル
   debugToggle.onclick = () => {
-    debugPanel.style.display = debugPanel.style.display === 'none' ? 'block' : 'none';
+    const isOn = debugToggle.getAttribute('data-state') === 'on';
+    debugToggle.setAttribute('data-state', isOn ? 'off' : 'on');
+    debugToggle.textContent = isOn ? 'デバッグ：オフ' : 'デバッグ：オン';
+    debugPanel.style.display = isOn ? 'none' : 'block';
+    logDebug(`デバッグモードを${isOn ? 'オフ' : 'オン'}にしました`);
   };
 
   // モーダル操作
@@ -116,6 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
     modal.style.display = 'none';
     document.querySelector('#progress-area').style.display = 'none';
     document.querySelector('#result-area').style.display = 'none';
+    downloadBtn.textContent = translations[localStorage.getItem('language') || 'ja'].download;
   };
 
   // タブ更新/閉じる時の警告
