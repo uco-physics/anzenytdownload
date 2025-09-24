@@ -1,1 +1,83 @@
-index 
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YouTube ダウンローダー</title>
+  <link rel="stylesheet" href="./styles.css">
+  <!-- デフォルトCDN: browser-ytdl-core -->
+  <script src="https://cdn.jsdelivr.net/npm/@warren-bank/browser-ytdl-core@latest/dist/ytdl-core.js"></script>
+</head>
+<body>
+  <!-- メインコンテナ -->
+  <div class="downloader">
+    <!-- 言語切り替え -->
+    <div class="downloader__language">
+      <select id="language" aria-label="言語を選択">
+        <option value="en">English</option>
+        <option value="ja" selected>日本語</option>
+        <option value="zh">中文</option>
+      </select>
+    </div>
+    <!-- デバッグモードトグル -->
+    <button id="debug-toggle" class="downloader__debug-toggle" aria-label="デバッグモードを切り替え">デバッグ</button>
+    <!-- URL入力フォーム -->
+    <form id="url-form" class="downloader__form">
+      <input type="text" id="url-input" class="downloader__input" placeholder="YouTubeのURLを入力" aria-label="YouTube URL">
+      <button type="button" id="settings-toggle" class="downloader__settings-toggle" aria-label="詳細設定">▼</button>
+    </form>
+    <!-- 詳細設定パネル -->
+    <div id="settings-panel" class="downloader__settings-panel" style="display: none;">
+      <label for="cdn-input">カスタムCDN URL:</label>
+      <input type="text" id="cdn-input" class="downloader__input" placeholder="例: https://unpkg.com/...">
+      <button id="apply-cdn" class="downloader__button">適用</button>
+      <label for="title-input">カスタムタイトル:</label>
+      <input type="text" id="title-input" class="downloader__input" placeholder="動画のタイトル（任意）">
+    </div>
+    <!-- 解像度/形式ドロップダウン -->
+    <div class="downloader__selectors">
+      <select id="resolution" class="downloader__select" aria-label="解像度を選択">
+        <option value="highest">最高画質</option>
+        <option value="720p" selected>720p</option>
+        <option value="360p">360p</option>
+      </select>
+      <select id="format" class="downloader__select" aria-label="形式を選択">
+        <option value="mp4" selected>MP4</option>
+        <option value="webm">WebM</option>
+      </select>
+    </div>
+    <!-- ダウンロードボタン -->
+    <button id="download-btn" class="downloader__button downloader__button--primary">ダウンロード</button>
+    <!-- ストップボタン（処理中） -->
+    <button id="stop-btn" class="downloader__button" style="display: none;">ストップ</button>
+    <!-- 進捗表示エリア -->
+    <div id="progress-area" class="downloader__progress" style="display: none;">
+      <div class="downloader__progress-bar"></div>
+      <pre id="progress-code" class="downloader__progress-code"></pre>
+      <p id="progress-text" class="downloader__progress-text"></p>
+    </div>
+    <!-- 結果エリア -->
+    <div id="result-area" class="downloader__result" style="display: none;">
+      <video id="video-preview" class="downloader__video" controls></video>
+      <button id="download-video" class="downloader__button">動画をダウンロード</button>
+      <pre id="metadata-json" class="downloader__metadata"></pre>
+      <button id="download-json" class="downloader__button">JSONをダウンロード</button>
+    </div>
+    <!-- デバッグパネル -->
+    <div id="debug-panel" class="downloader__debug" style="display: none;">
+      <pre id="debug-log" class="downloader__debug-log"></pre>
+    </div>
+    <!-- 警告モーダル -->
+    <div id="warning-modal" class="downloader__modal" style="display: none;">
+      <div class="downloader__modal-content">
+        <p id="modal-message">前回の処理が未完了です。続行しますか？</p>
+        <button id="modal-resume" class="downloader__button">続行</button>
+        <button id="modal-discard" class="downloader__button">破棄</button>
+      </div>
+    </div>
+  </div>
+  <script src="./translations.js"></script>
+  <script src="./download.js"></script>
+  <script src="./main.js"></script>
+</body>
+</html>
